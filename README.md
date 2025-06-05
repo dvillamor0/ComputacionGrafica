@@ -3,7 +3,7 @@
 - Juan Manuel Torres Leon
 - Carlos Javier Camacho Cely
 - Carlos Enrique Amaya Angarita
-- reynaldo moises solano martines
+- Reynaldo Moises Solano Martines
 - Daniel Felipe Villamor
 - Ilhaine Katerinne Forero Alarcón
 - Juan Antonio Rojas Cobos
