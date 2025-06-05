@@ -10,5 +10,3 @@
 | ~~**❌Jira**~~    | ✅ Hasta 10 usuarios        | ✅ Nativa                      | ✅ Sí (con extensiones)      | 🔴 Media/Baja     | ✅ Sí                        | 2 GB                      | ⚠️ Parcialmente       |
 | **Taiga**       | ✅ Ilimitado (en nube pública)| ✅ Nativa                     | ✅ Básico (Timeline)         | 🔴 Técnica        | ✅ Sí                        | Limitado                  | ⚠️ Si hay experiencia |
 | **❌Obsidian**    | ✅ Ilimitado (vía carpetas compartidas o plugins) | ⚠️ Manual (usando Git o plugins) | ⚠️ Solo con plugins (ej. Obsidian Gantt) | 🔴 Baja (requiere configuración) | ⚠️ Limitada (comentarios vía plugins o Git) | Local (depende del usuario) | ⚠️ Para equipos técnicos |
-| **ClickUp**     | ✅ Ilimitado                | ✅ Nativa                      | ✅ Sí (limitado en free)     | 🟡 Alta           | ✅ Sí                        | 100 MB total               | ✅ Sí                 |
-
