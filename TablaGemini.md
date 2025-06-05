@@ -1,7 +1,7 @@
 
 ## Comparativa de Herramientas de Gestión de Proyectos (Versiones Gratuitas)
 
-| Característica / Herramienta | Monday.com | Trello | ClickUp | Asana | GitHub Projects |
+| Característica / Herramienta | ❌Monday.com | Trello | ClickUp | Asana | GitHub Projects |
 | :--------------------------- | :--------- | :----- | :------ | :---- | :-------------- |
 | **Ideal para Proyecto de Salón** | ❌ **No (Límite de usuarios)** | ✅ Sí | ✅ Sí | ⚠️ Puede ser limitado (Revisar usuarios gratis) | ✅ Sí |
 | **Usuarios Gratuitos** | Muy limitado (Ej. 2-3) | Ilimitados | Ilimitados | Típicamente hasta 15 | Ilimitados (para colaboradores en repositorios) |
