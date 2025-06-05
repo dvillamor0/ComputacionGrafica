@@ -5,7 +5,7 @@
 
 | **Característica**                   | **Zoho Books (plan gratuito)** |
 |--------------------------------------|-------------------------------|
-| **Límite de usuarios**               | ✅ Hasta 3 usuarios (más en planes pagos, con control de permisos) |
+| **Límite de usuarios**               | ✅ Hasta 3 usuarios (más en planes pagos, con control de permisos) Su prueba gratuita tiene personas ilimitadas, por 30 días|
 | **Integración con GitHub**           | ❌ No nativa, pero posible vía API o Zoho Flow |
 | **Gantt / Cronograma**               | ❌ No disponible en Zoho Books (sí en Zoho Projects) |
 | **Facilidad de uso**                 | ✅ Alta. Interfaz intuitiva con guías paso a paso |
