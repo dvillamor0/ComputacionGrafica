@@ -2,7 +2,7 @@
 
 | Plataforma      | Límite de usuarios         | Integración con GitHub        | Gantt / Cronograma         | Facilidad de uso | Comentarios / Colaboración | Almacenamiento            | ¿Ideal para el salón? |
 |-----------------|-----------------------------|-------------------------------|-----------------------------|------------------|-----------------------------|----------------------------|------------------------|
-| **Trello**      | ✅ Ilimitado                | ✅ Vía Power-Up (1 gratis)     | ❌ No (solo con extensiones) | 🟢 Muy alta       | ✅ Sí                        | 10 MB por archivo          | ✅ Sí                 |
+| **Trello**      | ⚠️ Max 10 Ususarios               | ✅ Vía Power-Up (1 gratis)     | ❌ No (solo con extensiones) | 🟢 Muy alta       | ✅ Sí                        | 10 MB por archivo          | ✅ Sí                 |
 | **ClickUp**     | ✅ Ilimitado                | ✅ Nativa                      | ✅ Sí (limitado en free)     | 🟡 Alta           | ✅ Sí                        | 100 MB total               | ✅ Sí                 |
 | **Asana**       | ⚠️ Hasta 15 usuarios        | ✅ Vía integración externa     | ✅ Básico sin dependencias   | 🟢 Alta           | ✅ Sí                        | Ilimitado                 | ⚠️ Limitado           |
 | **Notion**      | ✅ Ilimitado                | ⚠️ Manual (no nativa)          | ✅ Sí (usando bases de datos)| 🟡 Media          | ✅ Sí                        | Ilimitado                 | ✅ Sí                 |
