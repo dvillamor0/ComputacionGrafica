@@ -11,4 +11,4 @@
 - Juan Antonio Rojas Cobos
 - Brayner Julian Motta Ojeda
 - Luis Gabriel Prada Castillo
-
+- Braian Fernando Pacheco Pérez
