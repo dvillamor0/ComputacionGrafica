@@ -31,6 +31,13 @@
         }
     </style>
 </head>
+{% csrf_token %}
+{% if request.session.cliente_nombre %}
+    <p>Hola {{ request.session.cliente_nombre }} |<a href="{% url 'historial' %}">Ver historial de pedidos</a> | <a href="{% url 'logout' %}">Cerrar sesión</a></p>
+{% else %}
+    <p>No estás logueado. <a href="{% url 'login' %}">Iniciar sesión</a>  |  <a href="{% url 'registro' %}">registrarse</a></p>
+{% endif %}
+
 <body>
     <h1>¡Bienvenido a Carcasas Cool!</h1>
     <p>Descubre las carcasas más originales y resistentes para tu celular.</p>
