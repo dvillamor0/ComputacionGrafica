@@ -1,4 +1,5 @@
 from django import forms
+from .models import Proveedor
 
 class LoginForm(forms.Form):
     correo = forms.EmailField(label="Correo electrónico", widget=forms.EmailInput(attrs={'placeholder': 'correo@ejemplo.com'}))
@@ -44,3 +45,23 @@ class RegistroForm(forms.Form):
 
         if password != confirm:
             raise forms.ValidationError("Las contraseñas no coinciden.")
+
+class ProveedorForm(forms.ModelForm):
+    class Meta:
+        model = Proveedor
+        fields = ['nombre', 'correo', 'celular', 'direccion']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'placeholder': 'Nombre del proveedor'}),
+            'correo': forms.EmailInput(attrs={'placeholder': 'correo@ejemplo.com'}),
+            'celular': forms.TextInput(attrs={'placeholder': '+57 300 123 4567'}),
+            'direccion': forms.Textarea(attrs={
+                'placeholder': 'Dirección del proveedor',
+                'rows': 3
+            }),
+        }
+        labels = {
+            'nombre': 'Nombre',
+            'correo': 'Correo electrónico',
+            'celular': 'Celular',
+            'direccion': 'Dirección',
+        }

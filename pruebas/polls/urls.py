@@ -10,4 +10,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('historial/', views.historial_pedidos, name='historial'),
     path('admin/pedidos/', views.todos_los_pedidos, name='admin_pedidos'),
+    path('admin/proveedores/', views.lista_proveedores, name='lista_proveedores'),
+    path('admin/proveedores/registrar/', views.registrar_proveedor, name='registrar_proveedor'),
 ]

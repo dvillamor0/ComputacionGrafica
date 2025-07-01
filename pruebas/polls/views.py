@@ -2,10 +2,10 @@
 
 
 from django.http import HttpResponse
-from .models import Celular, Pedido, Cliente
+from .models import Celular, Pedido, Cliente, Proveedor
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import LoginForm
+from .forms import LoginForm, ProveedorForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.backends import BaseBackend
@@ -152,3 +152,18 @@ def todos_los_pedidos(request):
         p.modelo_texto = celulares.get(p.id_celular, "Desconocido")
 
     return render(request, 'polls/admin_pedidos.html', {'pedidos': pedidos})
+
+def lista_proveedores(request):
+    proveedores = Proveedor.objects.all()
+    return render(request, 'polls/lista_proveedores.html', {'proveedores': proveedores})
+
+def registrar_proveedor(request):
+    if request.method == 'POST':
+        form = ProveedorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_proveedores')
+    else:
+        form = ProveedorForm()
+    
+    return render(request, 'polls/registro_proveedor.html', {'form': form})

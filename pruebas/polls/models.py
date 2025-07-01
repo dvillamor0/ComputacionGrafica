@@ -40,3 +40,16 @@ class Pedido(models.Model):
 
     class Meta:
         db_table = 'pedidos'
+
+class Proveedor(models.Model):
+    id_proveedor = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=100)
+    correo = models.EmailField(unique=True)
+    celular = models.CharField(max_length=20)
+    direccion = models.TextField()
+
+    class Meta:
+        db_table = 'proveedores'
+
+    def __str__(self):
+        return self.nombre
