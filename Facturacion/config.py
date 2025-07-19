@@ -27,7 +27,7 @@ FROM pedidos p
 JOIN clientes c ON p.id_cliente = c.id_cliente;
 """
 
-SERVICE_ACCOUNT_FILE = r"pruebas\zinc-citron-369904-29288f9a2c6a.json"
+SERVICE_ACCOUNT_FILE = r"../zinc-citron-369904-29288f9a2c6a.json"
 SHEETS_SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 SPREADSHEET_ID = '1T7DenpiTeuufp_MbVJmQWKnNcZ1fDSu1ozX9LB4J4d8'
 SHEET_RANGE = 'pedidos!A2:E'

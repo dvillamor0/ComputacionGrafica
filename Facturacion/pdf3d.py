@@ -1,3 +1,13 @@
+from __future__ import annotations
+import os
+import io
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseDownload
+from google.oauth2 import service_account
+from PyPDF2 import PdfMerger
+
+from .config import SERVICE_ACCOUNT_FILE, DRIVE_SCOPES, FOLDER_ID, DOWNLOAD_PATH
+
 def descargar_pdfs_drive_por_subcarpeta(nombres_permitidos):
     try:
         creds = service_account.Credentials.from_service_account_file(
