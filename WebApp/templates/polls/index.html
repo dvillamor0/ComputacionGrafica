@@ -1,0 +1,50 @@
+<!-- carcasas/templates/carcasas/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bienvenido a Carcasas Cool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #ff4081;
+        }
+        p {
+            font-size: 18px;
+        }
+        .cta-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff4081;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .cta-button:hover {
+            background-color: #e73370;
+        }
+    </style>
+</head>
+{% csrf_token %}
+{% load static %}
+<img src="{% static 'images/logo.gif' %}" alt="Gif animado" class="gif-animado">
+{% if request.session.cliente_nombre %}
+    <p>Hola {{ request.session.cliente_nombre }} |<a href="{% url 'historial' %}">Ver historial de pedidos</a> | <a href="{% url 'logout' %}">Cerrar sesión</a></p>
+{% else %}
+    <p>No estás logueado. <a href="{% url 'login' %}">Iniciar sesión</a>  |  <a href="{% url 'registro' %}">registrarse</a></p>
+{% endif %}
+
+{% load static %}
+<body>
+    <h1>¡Bienvenido a Carcasas Cool!</h1>
+    <p>Descubre las carcasas más originales y resistentes para tu celular.</p>
+    
+    <a href="productos/" class="cta-button">Ver colección</a>
+</body>
+</html>

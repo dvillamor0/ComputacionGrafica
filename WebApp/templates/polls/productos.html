@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Encuesta sobre Carcasas</title>
+    <style>
+        /* Reset y base */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f8ff, #d0eaff);
+            margin: 0;
+            padding: 40px 20px;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 {
+            color: #ff4081;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(255,64,129,0.5);
+        }
+        form {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.15);
+            max-width: 500px;
+            width: 100%;
+            transition: box-shadow 0.3s ease;
+        }
+        form:hover {
+            box-shadow: 0 12px 30px rgba(255, 64, 129, 0.3);
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #555;
+        }
+        select, input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #444;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        select:focus, input[type="text"]:focus {
+            border-color: #ff4081;
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 64, 129, 0.4);
+        }
+        button {
+            margin-top: 30px;
+            padding: 14px;
+            width: 100%;
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 64, 129, 0.3);
+        }
+        button:hover {
+            background-color: #e73370;
+        }
+        /* Para el placeholder */
+        input::placeholder {
+            color: #bbb;
+            font-style: italic;
+        }
+        /* Responsive */
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 10px;
+            }
+            form {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <h1>Encuesta sobre Carcasas</h1>
+
+
+        <label for="modelo">¿Qué modelo de celular tienes?</label>
+        <select id="modelo" name="modelo" required>
+            <option value="" disabled selected>Selecciona un modelo</option>
+            {% for celular in celulares %}
+                <option value="{{ celular.modelo }}">{{ celular.marca }} {{ celular.modelo }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="camara">¿Desea un protector de camara?</label>
+        <input type="checkbox" id="camara" name="camara" value="si">
+        Sí
+        </label>
+
+
+        <label for="acce_medio">¿Qué tipo de accesorio desea para la parte media del equipo?</label>
+        <select id="acce_medio" name="acce_medio" required>
+            <option value="null" >Una opcion si lo desea incluir en el pedido</option>
+            <option value="1">Tarjetero</option>
+            <option value="3">Anillo</option>
+            <option value="4">popsockets</option>
+        </select>
+
+        <label for="KickStand">¿Desea un KickStand?</label>
+        <input type="checkbox" id="KickStand" name="KickStand" value="si">
+        Sí
+        </label>
+
+
+        <label for="color">¿Qué color prefieres?</label>
+        <select id="color" name="color" required>
+            <option value="null" >seleccione un color</option>
+            <option value="0,0,0">Negro</option>
+            <option value="255,255,255">Blanco</option>
+            <option value="255,69,0">Coral</option>
+            <option value="0,128,128">Turquesa</option>
+            <option value="128,128,128">Gris</option>
+            <option value="139,69,19">Castaño</option>
+            <option value="255,255,0">Amarillo</option>
+            <option value="200,162,200">Lila</option>
+
+        </select>
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" min="1" step="1">
+
+        <button type="submit">Enviar respuesta</button>
+    </form>
+</body>
+</html>
