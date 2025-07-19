@@ -21,7 +21,7 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from django.shortcuts import get_object_or_404
 
-SERVICE_ACCOUNT_FILE = r"C:\Users\Estudiante\Downloads\pruebas\pruebas\zinc-citron-369904-29288f9a2c6a.json"
+SERVICE_ACCOUNT_FILE = r"..\zinc-citron-369904-29288f9a2c6a.json"
 SHEETS_SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SPREADSHEET_ID = '1T7DenpiTeuufp_MbVJmQWKnNcZ1fDSu1ozX9LB4J4d8'
 SHEET_NAME = 'pedidos'
