@@ -1,0 +1,27 @@
+# Activar ejecucion de Scripts y venv
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process && .\venv\Scripts\Activate.ps1
+
+# Ver ruta de pip activo
+Get-Command pip | Select-Object Source
+
+# Establecer requerimientos 
+pip freeze > requirements.txt
+
+# Instalar requerimientos
+pip install -r requirements.txt
+
+---------- CONECTAR CON LA DB ----------
+
+# Windows
+icacls "C:\Users\Sala CAD\Documents\Comp\pgclient_key" /grant:r "Sala CAD:R"
+ssh -i "C:\Users\Sala CAD\Documents\Comp\pgclient_key" -L 5432:localhost:5432 pgclient@3.128.203.89
+
+python.exe .\ProyectoComp\producer_tester.py
+python.exe .\ProyectoComp\order_consumer.py
+
+# passphrase: 1234
+
+# Rabbit
+cd "C:\Program Files\RabbitMQ Server\rabbitmq_server-4.1.1\sbin"
+.\rabbitmq-plugins enable rabbitmq_management
+http://localhost:15672/

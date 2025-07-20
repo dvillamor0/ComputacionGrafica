@@ -1,0 +1,223 @@
+Public Sub CambiarColorYGuardarImagen()
+
+    Dim oApp As Application
+    Set oApp = ThisApplication
+
+    If oApp.ActiveDocument.DocumentType <> kPartDocumentObject Then
+        MsgBox "Este macro solo funciona con documentos de pieza (.ipt)", vbExclamation
+        Exit Sub
+    End If
+
+    Dim oDoc As PartDocument
+    Set oDoc = oApp.ActiveDocument
+
+    oDoc.Update ' Forzar actualización del modelo
+
+    Dim oParams As Parameters
+    Set oParams = oDoc.ComponentDefinition.Parameters
+
+    ' Leer parámetros RGB
+    Dim Rparam As Parameter, Gparam As Parameter, Bparam As Parameter
+    Dim R As Integer, G As Integer, B As Integer
+    Dim foundR As Boolean, foundG As Boolean, foundB As Boolean
+
+    Dim p As Parameter
+    For Each p In oParams
+        Select Case UCase(Trim(p.Name))
+            Case "R": Set Rparam = p: foundR = True
+            Case "G": Set Gparam = p: foundG = True
+            Case "B": Set Bparam = p: foundB = True
+        End Select
+    Next
+
+    If Not (foundR And foundG And foundB) Then
+        MsgBox "No se encontraron todos los parámetros R, G y B. Revisa los nombres.", vbCritical
+        Exit Sub
+    End If
+
+    ' Leer parámetro "Pedido"
+    Dim PedidoParam As Parameter
+    Dim PedidoNombre As String
+
+    On Error Resume Next
+    Set PedidoParam = oParams.Item("Pedido")
+    On Error GoTo 0
+
+    If PedidoParam Is Nothing Then
+        MsgBox "No se encontró el parámetro 'Pedido'.", vbCritical
+        Exit Sub
+    End If
+
+    PedidoNombre = CStr(PedidoParam.Value)
+
+    ' Convertir RGB
+    On Error GoTo ErrorConversion
+    R = CLng(Rparam.Value)
+    G = CLng(Gparam.Value)
+    B = CLng(Bparam.Value)
+    On Error GoTo 0
+
+    ' Crear/obtener estilo de color
+    Dim oAssets As Assets
+    Set oAssets = oDoc.Assets
+
+    Const estiloNombre As String = "ColorDesdeExcel"
+    Dim oAsset As Asset
+
+    On Error Resume Next
+    Set oAsset = oAssets.Item(estiloNombre)
+    On Error GoTo 0
+
+    If oAsset Is Nothing Then
+        Set oAsset = oAssets.Add(kAssetTypeAppearance, "Generic", estiloNombre)
+    End If
+
+    oAsset.Item("generic_diffuse").Value = oApp.TransientObjects.CreateColor(R, G, B)
+
+    ' Aplicar apariencia
+    Dim oBody As SurfaceBody
+    For Each oBody In oDoc.ComponentDefinition.SurfaceBodies
+        oBody.Appearance = oAsset
+    Next
+
+    Call GuardarImagenVistaInicio(oDoc, PedidoNombre)
+    Call ExportarSTL(oDoc, PedidoNombre)
+    Call ExportarPDF3D_Anark(PedidoNombre)
+
+    ' Abrir el explorador de archivos en la carpeta del documento usando PowerShell
+    Dim rutaCarpeta As String
+    rutaCarpeta = Left(oDoc.FullFileName, InStrRev(oDoc.FullFileName, "\") - 1)
+    
+    Shell "powershell -Command Start-Process explorer.exe '" & rutaCarpeta & "'", vbHide
+
+    MsgBox "Color aplicado, imagen JPG, archivo STL y PDF 3D exportados correctamente.", vbInformation
+    Exit Sub
+
+ErrorConversion:
+    MsgBox "Error al convertir los parámetros R, G o B. Verifica los valores.", vbCritical
+
+End Sub
+
+'----------------------------------------------------------
+Sub GuardarImagenVistaInicio(oDoc As PartDocument, PedidoNombre As String)
+
+    Dim oView As Inventor.View
+    Set oView = ThisApplication.ActiveView
+
+    oView.GoHome
+    DoEvents
+    oView.Update
+
+    Dim oFolder As String
+    oFolder = Left(oDoc.FullFileName, InStrRev(oDoc.FullFileName, "\") - 1)
+
+    Dim rutaImagen As String
+    rutaImagen = oFolder & "\" & PedidoNombre & ".jpg"
+
+    oView.SaveAsBitmap rutaImagen, 1024, 768
+
+End Sub
+
+'----------------------------------------------------------
+Sub ExportarSTL(oDoc As PartDocument, PedidoNombre As String)
+
+    Dim oFolder As String
+    oFolder = Left(oDoc.FullFileName, InStrRev(oDoc.FullFileName, "\") - 1)
+
+    Dim rutaSTL As String
+    rutaSTL = oFolder & "\" & PedidoNombre & ".stl"
+
+    On Error GoTo Fallo
+    oDoc.SaveAs rutaSTL, True
+    Exit Sub
+
+Fallo:
+    MsgBox "Error: No se pudo exportar STL usando SaveAs.", vbCritical
+
+End Sub
+
+'----------------------------------------------------------
+Sub ExportarPDF3D_Anark(PedidoNombre As String)
+
+    Dim oApp As Application
+    Set oApp = ThisApplication
+
+    Dim oDoc As Document
+    Set oDoc = oApp.ActiveDocument
+
+    If oDoc Is Nothing Then
+        MsgBox "No hay documento activo.", vbExclamation
+        Exit Sub
+    End If
+
+    If oDoc.Dirty Then
+        oDoc.Save
+    End If
+
+    ' Activar Add-in de Anark
+    Dim oAddIn As ApplicationAddIn
+    Set oAddIn = oApp.ApplicationAddIns.ItemById("{3EE52B28-D6E0-4EA4-8AA6-C2A266DEBB88}")
+
+    If Not oAddIn.Activated Then
+        oAddIn.Activate
+    End If
+
+    ' Ejecutar el comando de publicación Anark PDF 3D
+    On Error GoTo ErrorExport
+    ThisApplication.CommandManager.ControlDefinitions.Item("AnarkCoreInventorAddIn:PublishBtn").Execute
+    On Error GoTo 0
+
+    ' Esperar unos segundos para que se cree el PDF
+    Dim startTime As Double
+    startTime = Timer
+    Do While Timer < startTime + 5
+        DoEvents
+    Loop
+
+    ' Buscar el PDF más reciente en la carpeta del archivo
+    Dim carpeta As String
+    carpeta = Left(oDoc.FullFileName, InStrRev(oDoc.FullFileName, "\") - 1)
+
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+
+    Dim carpetaObj As Object
+    Set carpetaObj = fso.GetFolder(carpeta)
+
+    Dim archivo As Object
+    Dim pdfMasReciente As Object
+    Dim tiempoMasReciente As Date
+    tiempoMasReciente = #1/1/2000# ' Fecha antigua
+
+    For Each archivo In carpetaObj.Files
+        If LCase(fso.GetExtensionName(archivo.Name)) = "pdf" Then
+            If archivo.DateLastModified > tiempoMasReciente Then
+                Set pdfMasReciente = archivo
+                tiempoMasReciente = archivo.DateLastModified
+            End If
+        End If
+    Next
+
+    If Not pdfMasReciente Is Nothing Then
+        Dim rutaNueva As String
+        rutaNueva = carpeta & "\" & PedidoNombre & ".pdf"
+
+        On Error Resume Next
+        Name pdfMasReciente.Path As rutaNueva
+        If Err.Number <> 0 Then
+            MsgBox "El PDF fue generado, pero no se pudo renombrar. Verifica que no esté abierto.", vbExclamation
+            Err.Clear
+        Else
+            ' Todo correcto
+        End If
+        On Error GoTo 0
+    Else
+        MsgBox "No se encontró ningún PDF generado en la carpeta.", vbExclamation
+    End If
+
+    Exit Sub
+
+ErrorExport:
+    MsgBox "No se pudo ejecutar el comando Anark PDF 3D. Verifica si el complemento está correctamente configurado.", vbCritical
+
+End Sub
